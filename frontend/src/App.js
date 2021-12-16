@@ -1,15 +1,18 @@
-import React, { useState } from "react";
+import * as React from "react";
+import axios from "axios";
 
 export default function App() {
-  const [text, setText] = useState("");
+  const [text, setText] = React.useState("");
 
-  const [todoarray, setTodoarray] = useState([
-    "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dolore, atque? Deleniti aliquid facere necessitatibus voluptas natus rerum autem soluta tempore?",
-    "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dolore, atque? Deleniti aliquid facere necessitatibus voluptas natus rerum autem soluta tempore?",
-    "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dolore, atque? Deleniti aliquid facere necessitatibus voluptas natus rerum autem soluta tempore?",
-    "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dolore, atque? Deleniti aliquid facere necessitatibus voluptas natus rerum autem soluta tempore?",
-    "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dolore, atque? Deleniti aliquid facere necessitatibus voluptas natus rerum autem soluta tempore?",
-  ]);
+  const [todoarray, setTodoarray] = React.useState([]);
+
+  React.useEffect(() => {
+    axios.get("http://localhost:8080/").then((res) => {
+      console.log(res.data);
+      setTodoarray(res.data);
+    });
+  }, []);
+
   return (
     <div className="app">
       <form action="">
@@ -32,7 +35,13 @@ export default function App() {
       </form>
       <div className="todolist">
         {todoarray.map((item, index) => {
-          return <div className="todolist__item">{item}</div>;
+          return (
+            <div className="todolist__item" key={index}>
+              {item._id}
+              <br />
+              {item.item}
+            </div>
+          );
         })}
       </div>
     </div>
